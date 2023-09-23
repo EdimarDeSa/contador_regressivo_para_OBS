@@ -563,4 +563,13 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+# PyCharm
+.idea
+
+# Others
+*.bat
+*.ico
+*.png
+*.exe
+
 # End of https://www.toptal.com/developers/gitignore/api/python,vs,visualstudiocode,executable,advancedinstaller
