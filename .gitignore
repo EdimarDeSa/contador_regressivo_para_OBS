@@ -571,5 +571,7 @@ MigrationBackup/
 *.ico
 *.png
 *.exe
+contador*.txt
+
 
 # End of https://www.toptal.com/developers/gitignore/api/python,vs,visualstudiocode,executable,advancedinstaller
