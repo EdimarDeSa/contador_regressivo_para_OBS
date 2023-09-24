@@ -1,5 +1,6 @@
 import datetime
 import pathlib
+import tkinter.messagebox
 from tkinter.messagebox import askyesno
 
 import ttkbootstrap as ttk
@@ -128,6 +129,9 @@ class Temporizador:
         return f'{horas_totais:02}:{minutos_totais:02}:{segundos:02}'
 
     def inicia_contagem(self):
+        if self.horario_atual > self.horario_fim_timer:
+            tkinter.messagebox.showerror('O horário já passou...', 'Não é possível iniciar um timer com o tempo de término menor que o horário atual!')
+            return
         self.contando.set(True)
         self.entry_nome_do_arquivo.config(state=READONLY)
         self.escreve_arquivo_de_contagem('00:00:00')
@@ -205,6 +209,6 @@ class Temporizador:
 
 
 if __name__ == '__main__':
-    root = ttk.Window()
+    root = ttk.Window(iconphoto='./Imagens/cronometro-de-areia.png')
     Temporizador(root)
     root.mainloop()
