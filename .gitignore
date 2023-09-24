@@ -568,8 +568,6 @@ MigrationBackup/
 
 # Others
 *.bat
-*.ico
-*.png
 *.exe
 contador*.txt
 
