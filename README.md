@@ -1,36 +1,5 @@
-<style>
-
-.quadro_botao {
-}
-
-.button {
-  background: #2B2D2F;
-  height: 80px;
-  width: 200px;
-  text-align: center;
-  transform: translateY(-50%);
-  margin: 0 auto;
-  cursor: pointer;
-  border-radius: 10px;
-}
-
-.text {
-  font: bold 1.25rem/1 poppins;
-  color: #71DFBE;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-52%);
-  left: 0;
-  right: 0;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-</style>
-
 <link href="https://fonts.googleapis.com/css?family=Poppins:600" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 
 # Contador regressivo
 Trata-se de um contador regressivo simples que gera um arquivo '.txt' que pode ser usado no OBS Studio.
@@ -67,8 +36,9 @@ pip install -r requirements.txt
 ## Instruções de uso
 Após iniciar o programa uma a GUI irá se abrir:<br>
 ![img.png](Imagens/img_contador.png)<br>
+
 <p>
-    Note que ele já vem com um horário de início e de término por padrão.<br>
+    Note que ele já vem com um horário de início e de término por padrão.
 </p>
 <p>
     Ajuste o horário de inicio e encerramento de acordo com sua necessidade e aperte em 'Start'.
@@ -93,8 +63,8 @@ Após iniciar o programa uma a GUI irá se abrir:<br>
 
 ![img.png](Imagens/Texto_GDI+.png)
 
-<p align="center">
-Para ter acesso ao app já compilado, acesse:
+<p>
+Para ter acesso ao app já compilado:
 </p>
 
 <BR>
@@ -106,8 +76,6 @@ Para ter acesso ao app já compilado, acesse:
     </div>
 </div>
 
-<p align="center">
-Desenvolvido por <a href="https://www.efscode.com.br">EFSCode</a>
-</p>
 <p>
+Desenvolvido por <a href="https://www.efscode.com.br">EFSCode</a>
 </p>

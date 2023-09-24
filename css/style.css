@@ -1,0 +1,41 @@
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+p {
+  text-align: center;
+}
+
+img {
+  max-width: 50vw;
+  max-height: 50vh;
+}
+
+.button {
+  background: #2B2D2F;
+  height: 80px;
+  width: 200px;
+  text-align: center;
+  transform: translateY(-50%);
+  margin: 0 auto;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.text {
+  font: bold 1.25rem/1 poppins;
+  color: #71DFBE;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-52%);
+  left: 0;
+  right: 0;
+}
+
+.text:hover {
+  color: #71DFBE;
+}
