@@ -20,7 +20,6 @@ img {
   height: 80px;
   width: 200px;
   text-align: center;
-  transform: translateY(-50%);
   margin: 0 auto;
   cursor: pointer;
   border-radius: 10px;
@@ -31,7 +30,6 @@ img {
   color: #71DFBE;
   position: absolute;
   top: 50%;
-  transform: translateY(-52%);
   left: 0;
   right: 0;
 }
