@@ -1,8 +1,6 @@
 import datetime
 import pathlib
-import tkinter.messagebox
-from pathlib import Path
-from tkinter.messagebox import askyesno
+from tkinter.messagebox import askyesno, showerror
 
 import ttkbootstrap as ttk
 from ttkbootstrap import Style
@@ -18,8 +16,6 @@ class Temporizador:
     def __init__(self, master: ttk.Window):
         self.root = master
 
-        self.style = Style(theme=TEMA)
-
         self.configura_janela()
         self.configura_variaveis()
         self.configura_interface_do_usuario()
@@ -27,8 +23,6 @@ class Temporizador:
         self.atualiza_horario_atual()
 
     def configura_janela(self):
-        self.root.geometry('600x300')
-        self.root.title(TITULO_JANELA)
         self.root.wm_protocol('WM_DELETE_WINDOW', self.evento_de_fechamento)
 
     def configura_variaveis(self):
@@ -124,7 +118,7 @@ class Temporizador:
 
     def inicia_contagem(self):
         if self.horario_atual > self.horario_fim_timer:
-            tkinter.messagebox.showerror(
+            showerror(
                 'O horário já passou...',
                 'Não é possível iniciar um timer com o tempo de término menor que o horário atual!'
             )
@@ -210,6 +204,6 @@ class Temporizador:
 
 
 if __name__ == '__main__':
-    root = ttk.Window(iconphoto=LOCAL_IMAGEM_ICONE)
+    root = ttk.Window(iconphoto=LOCAL_IMAGEM_ICONE, themename=TEMA, size=(600, 300), title=TITULO_JANELA)
     Temporizador(root)
     root.mainloop()
