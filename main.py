@@ -1,11 +1,8 @@
-import datetime
 import pathlib
-import tkinter.messagebox
-from pathlib import Path
-from tkinter.messagebox import askyesno
+import sys
+from tkinter.messagebox import askyesno, showerror
 
-import ttkbootstrap as ttk
-from ttkbootstrap import Style
+from ttkbootstrap import *
 
 from variaveis import *
 
@@ -15,10 +12,8 @@ def valida_entrada(numero, tempo_maximo) -> bool:
 
 
 class Temporizador:
-    def __init__(self, master: ttk.Window):
+    def __init__(self, master: Window):
         self.root = master
-
-        self.style = Style(theme=TEMA)
 
         self.configura_janela()
         self.configura_variaveis()
@@ -27,20 +22,17 @@ class Temporizador:
         self.atualiza_horario_atual()
 
     def configura_janela(self):
-        self.root.geometry('600x300')
-        self.root.title(TITULO_JANELA)
         self.root.wm_protocol('WM_DELETE_WINDOW', self.evento_de_fechamento)
 
     def configura_variaveis(self):
         self.validate_hour_input_register = self.root.register(self.validate_hour_input_cmd)
         self.validate_minute_second_input_register = self.root.register(self.validate_minute_second_input_cmd)
 
-        self.contando = ttk.BooleanVar(value=False)
-        self.afterid = ttk.StringVar()
+        self.contando = BooleanVar(value=False)
+        self.afterid = StringVar()
 
         self.nome_do_arquivo = NOME_ARQUIVO_PADRAO
-        self.local_do_arquivo = pathlib.Path(__file__).resolve().parent
-        self._hora_inicio = None
+        self.BASE = pathlib.Path(__file__).resolve().parent.parent
 
     def configura_interface_do_usuario(self):
         self.form_horario(INICIO, 0.05)
@@ -50,37 +42,41 @@ class Temporizador:
         self.inicia_botoes()
 
     def form_horario(self, nome_da_label, relx):
-        ttk.Label(self.root, text=f'Horário de {nome_da_label}').place(relx=relx, rely=0.02)
+        Label(self.root, text=f'Horário de {nome_da_label}').place(relx=relx, rely=0.02)
 
-        ttk.Label(self.root, text=HORA).place(relx=relx, rely=0.1)
-        hour_spinbox = ttk.Spinbox(self.root, name=f'hora_{nome_da_label}', from_=0, to=24, validate=KEY,
-                                   validatecommand=(self.validate_hour_input_register, "%P"))
+        Label(self.root, text=HORA).place(relx=relx, rely=0.1)
+        hour_spinbox = Spinbox(self.root, name=f'hora_{nome_da_label}', from_=0, to=24, validate=KEY,
+                               validatecommand=(self.validate_hour_input_register, "%P"))
         hour_spinbox.place(relx=relx, rely=0.2, width=75)
         hour_spinbox.insert(0, HORA_INICIAL_PADRAO if nome_da_label == INICIO else HORA_FINAL_PADRAO)
 
-        ttk.Label(self.root, text=':', font='times 25').place(relx=relx + 0.135, rely=0.155)
+        Label(self.root, text=':', font='times 25').place(relx=relx + 0.135, rely=0.155)
 
-        ttk.Label(self.root, text=MINUTO).place(relx=relx + 0.175, rely=0.1)
-        minute_spinbox = ttk.Spinbox(self.root, name=f'minuto_{nome_da_label}', from_=0, to=60, validate=KEY,
-                                     validatecommand=(self.validate_minute_second_input_register, "%P"))
+        Label(self.root, text=MINUTO).place(relx=relx + 0.175, rely=0.1)
+        minute_spinbox = Spinbox(self.root, name=f'minuto_{nome_da_label}', from_=0, to=60, validate=KEY,
+                                 validatecommand=(self.validate_minute_second_input_register, "%P"))
         minute_spinbox.place(relx=relx + 0.175, rely=0.2, width=75)
         minute_spinbox.insert(0, MINUTO_INICAL_PADRAO if nome_da_label == INICIO else MINUTO_FINAL_PADRAO)
 
     def form_nome_arquivo(self, relx):
-        ttk.Label(self.root, text='Nome do arquivo:', font='-size 12').place(relx=relx, rely=0.405)
+        Label(self.root, text='Nome do arquivo:', font='-size 12').place(relx=relx, rely=0.405)
 
-        self.entry_nome_do_arquivo = ttk.Entry(self.root)
+        self.entry_nome_do_arquivo = Entry(self.root)
         self.entry_nome_do_arquivo.place(relx=relx + 0.28, rely=0.4, relwidth=0.62)
         self.entry_nome_do_arquivo.insert(0, self.nome_do_arquivo)
 
     def inicia_display(self):
-        self.display = ttk.Label(self.root, anchor=CENTER, font='-size 32')
+        self.display = Label(self.root, anchor=CENTER, font='-size 32')
         self.display.place(relx=0.05, rely=0.55, relwidth=.9)
         self.set_display('00:00:00')
 
     def inicia_botoes(self):
-        ttk.Button(self.root, name=START, text=START.upper(), style=SUCCESS, command=self.inicia_contagem)
-        ttk.Button(self.root, name=CANCELAR, text=CANCELAR.upper(), style=DANGER, command=self.encerrar_contagem)
+        Button(self.root, name=START, text=START.upper(),
+               style=SUCCESS,
+               command=self.inicia_contagem)
+        Button(self.root, name=CANCELAR, text=CANCELAR.upper(),
+               style=DANGER,
+               command=self.encerrar_contagem)
 
         self.posiciona_botao_start_cancelar()
 
@@ -104,7 +100,7 @@ class Temporizador:
     def posiciona_botao_start_cancelar(self, botao=START):
         var_tipo_bt = botao == START
         estado = NORMAL if var_tipo_bt else READONLY
-        self.root.children[START if var_tipo_bt else CANCELAR].place(relx=0.15, rely=0.85, relwidth=0.7)
+        self.root.children[START if var_tipo_bt else CANCELAR].place(relx=0.15, rely=0.8, relwidth=0.7)
         self.root.children[CANCELAR if var_tipo_bt else START].place_forget()
 
         self.root.children[HORA_INICIO].configure(state=estado)
@@ -113,10 +109,10 @@ class Temporizador:
         self.root.children[MINUTO_ENCERRAMENTO].configure(state=estado)
 
     def escreve_arquivo_de_contagem(self, text=''):
-        with open(self.local_do_arquivo / self.get_nome_do_arquivo, W) as arquivo:
+        with open(self.get_local_do_arquivo, W) as arquivo:
             arquivo.write(text)
 
-    def tempo_restante(self, tempo_limite: datetime.datetime) -> str:
+    def tempo_restante(self, tempo_limite: datetime) -> str:
         tempo_restante = tempo_limite - self.horario_atual
         horas_totais, segundos = divmod(tempo_restante.seconds, 3600)
         minutos_totais, segundos = divmod(segundos, 60)
@@ -124,7 +120,7 @@ class Temporizador:
 
     def inicia_contagem(self):
         if self.horario_atual > self.horario_fim_timer:
-            tkinter.messagebox.showerror(
+            showerror(
                 'O horário já passou...',
                 'Não é possível iniciar um timer com o tempo de término menor que o horário atual!'
             )
@@ -157,8 +153,8 @@ class Temporizador:
         self.afterid.set(self.root.after(500, self.conta_tempo))
 
     def atualiza_horario_atual(self):
-        horario_atual_str = datetime.datetime.now().strftime(FORMATO_HORA_MINUTO_SEGUNDO)
-        self.horario_atual = datetime.datetime.strptime(horario_atual_str, FORMATO_HORA_MINUTO_SEGUNDO)
+        horario_atual_str = datetime.now().strftime(FORMATO_HORA_MINUTO_SEGUNDO)
+        self.horario_atual = datetime.strptime(horario_atual_str, FORMATO_HORA_MINUTO_SEGUNDO)
 
     def evento_de_fechamento(self):
         if self.contando.get():
@@ -169,12 +165,16 @@ class Temporizador:
             if not r:
                 return
 
-        self.root.quit()
+        sys.exit()
 
     def informa_local_do_arquivo(self):
-        top = ttk.Toplevel(resizable=[False, False], topmost=True)
-        txt = ttk.Entry(top, width=100)
-        txt.insert(0, self.local_do_arquivo)
+        # top = Toplevel(resizable=[False, False], topmost=True)
+        top = Toplevel()
+        top.title(TITULO_JANELA)
+        top.config(takefocus=True)
+
+        txt = Entry(top, width=100)
+        txt.insert(0, self.get_local_do_arquivo)
         txt.config(state=READONLY)
         txt.pack(padx=5, pady=5)
         txt.bind('<Button-1>', self.copia_texto)
@@ -184,7 +184,7 @@ class Temporizador:
         txt = widget.get()
         self.root.clipboard_clear()
         self.root.clipboard_append(txt)
-        label = ttk.Label(widget.master, text='Texto copiado!')
+        label = Label(widget.master, text='Texto copiado!')
         label.pack()
         widget.after(1000, label.pack_forget)
 
@@ -193,23 +193,28 @@ class Temporizador:
         return f'{self.entry_nome_do_arquivo.get()}.txt'
 
     @property
+    def get_local_do_arquivo(self):
+        local = self.BASE / self.get_nome_do_arquivo
+        return str(local)
+
+    @property
     def horario_inicio_str(self) -> str:
         return f'{self.root.children[HORA_INICIO].get()}:{self.root.children[HORA_ENCERRAMENTO].get()}'
 
     @property
-    def horario_inicio_timer(self) -> datetime.datetime:
-        return datetime.datetime.strptime(self.horario_inicio_str, FORMATO_HORA_MINUTO)
+    def horario_inicio_timer(self) -> datetime:
+        return datetime.strptime(self.horario_inicio_str, FORMATO_HORA_MINUTO)
 
     @property
     def horario_fim_str(self) -> str:
         return f'{self.root.children[HORA_ENCERRAMENTO].get()}:{self.root.children[MINUTO_ENCERRAMENTO].get()}'
 
     @property
-    def horario_fim_timer(self) -> datetime.datetime:
-        return datetime.datetime.strptime(self.horario_fim_str, FORMATO_HORA_MINUTO)
+    def horario_fim_timer(self) -> datetime:
+        return datetime.strptime(self.horario_fim_str, FORMATO_HORA_MINUTO)
 
 
 if __name__ == '__main__':
-    root = ttk.Window(iconphoto=LOCAL_IMAGEM_ICONE)
+    root = Window(iconphoto=LOCAL_IMAGEM_ICONE, themename=TEMA, size=(600, 300), title=TITULO_JANELA, resizable=(False, False))
     Temporizador(root)
     root.mainloop()

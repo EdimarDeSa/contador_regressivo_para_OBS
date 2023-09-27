@@ -55,7 +55,7 @@ Após iniciar o programa uma a GUI irá se abrir:<br>
     Para copiar o caminho, basta clicar no texto.
 </p>
 
-![img.png](caminho_para_contador1.png)
+![img.png](Imagens/caminho_para_contador1.png)
 
 <p>
     Será possível monitorar esse arquivo para que seja impresso em uma cena do OBS Studio atraves da fonte 'Texto (GDI+)'. Então, colamos o diretório copiado e pronto!

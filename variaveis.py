@@ -1,6 +1,5 @@
 from ttkbootstrap.constants import *
 
-
 INICIO = 'inicio'
 ENCERRAMENTO = 'encerramento'
 
@@ -23,10 +22,11 @@ FORMATO_HORA_MINUTO_SEGUNDO = '%H:%M:%S'
 
 START = 'start'
 CANCELAR = 'cancelar'
+READONLY = 'readonly'
 
 TEMA = 'flatly'
 TITULO_JANELA = 'Contador regressivo'
 NOME_ARQUIVO_PADRAO = 'contador1'
 KEY = 'key'
 
-LOCAL_IMAGEM_ICONE = './Imagens/cronometro-de-areia.png'
+LOCAL_IMAGEM_ICONE = '../Imagens/cronometro-de-areia.png'
