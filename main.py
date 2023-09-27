@@ -1,9 +1,9 @@
 import datetime
 import pathlib
+import sys
 from tkinter.messagebox import askyesno, showerror
 
 import ttkbootstrap as ttk
-from ttkbootstrap import Style
 
 from variaveis import *
 
@@ -163,7 +163,7 @@ class Temporizador:
             if not r:
                 return
 
-        self.root.quit()
+        sys.exit()
 
     def informa_local_do_arquivo(self):
         top = ttk.Toplevel(resizable=[False, False], topmost=True)
