@@ -567,10 +567,9 @@ MigrationBackup/
 .idea
 
 # Others
-*.bat
-*.exe
+*.json
 contador*.txt
 distribuicao/
-
+auto-py-to-exe-configs.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,vs,visualstudiocode,executable,advancedinstaller
