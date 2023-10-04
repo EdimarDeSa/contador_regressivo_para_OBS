@@ -68,7 +68,7 @@ class Temporizador:
     def inicia_display(self):
         self.display = Label(self.root, anchor=CENTER, font='-size 32')
         self.display.place(relx=0.05, rely=0.55, relwidth=.9)
-        self.set_display('00:00:00')
+        self.set_display(TEMPO_ZERADO)
 
     def inicia_botoes(self):
         Button(self.root, name=START, text=START.upper(),
@@ -89,10 +89,11 @@ class Temporizador:
     def encerrar_contagem(self, texto='Cancelado!'):
         self.root.after_cancel(self.afterid.get())
         self.display.config(text=texto)
-        self.escreve_arquivo_de_contagem('00:00')
+        self.escreve_arquivo_de_contagem(TEMPO_ZERADO)
         self.posiciona_botao_start_cancelar()
         self.entry_nome_do_arquivo.config(state=NORMAL)
         self.contando.set(False)
+        self.root.children.get('toplevel').destroy()
 
     def set_display(self, text):
         self.display.config(text=text)
@@ -100,13 +101,13 @@ class Temporizador:
     def posiciona_botao_start_cancelar(self, botao=START):
         var_tipo_bt = botao == START
         estado = NORMAL if var_tipo_bt else READONLY
-        self.root.children[START if var_tipo_bt else CANCELAR].place(relx=0.15, rely=0.8, relwidth=0.7)
-        self.root.children[CANCELAR if var_tipo_bt else START].place_forget()
+        self.root.children.get(START if var_tipo_bt else CANCELAR).place(relx=0.15, rely=0.8, relwidth=0.7)
+        self.root.children.get(CANCELAR if var_tipo_bt else START).place_forget()
 
-        self.root.children[HORA_INICIO].configure(state=estado)
-        self.root.children[MINUTO_INICIO].configure(state=estado)
-        self.root.children[HORA_ENCERRAMENTO].configure(state=estado)
-        self.root.children[MINUTO_ENCERRAMENTO].configure(state=estado)
+        self.root.children.get(HORA_INICIO).configure(state=estado)
+        self.root.children.get(MINUTO_INICIO).configure(state=estado)
+        self.root.children.get(HORA_ENCERRAMENTO).configure(state=estado)
+        self.root.children.get(MINUTO_ENCERRAMENTO).configure(state=estado)
 
     def escreve_arquivo_de_contagem(self, text=''):
         with open(self.get_local_do_arquivo, W) as arquivo:
@@ -128,7 +129,7 @@ class Temporizador:
 
         self.contando.set(True)
         self.entry_nome_do_arquivo.config(state=READONLY)
-        self.escreve_arquivo_de_contagem('00:00:00')
+        self.escreve_arquivo_de_contagem(TEMPO_ZERADO)
         self.informa_local_do_arquivo()
         self.conta_tempo()
 
@@ -146,7 +147,7 @@ class Temporizador:
 
         else:
             self.set_display(text='Timer finalizado!')
-            self.escreve_arquivo_de_contagem('00:00')
+            self.escreve_arquivo_de_contagem(TEMPO_ZERADO)
             self.posiciona_botao_start_cancelar()
             self.encerrar_contagem('Tempo encerrado')
 
@@ -168,13 +169,12 @@ class Temporizador:
         sys.exit()
 
     def informa_local_do_arquivo(self):
-        # top = Toplevel(resizable=[False, False], topmost=True)
-        top = Toplevel()
+        top = Toplevel(resizable=(False, False), topmost=True, name='toplevel')
         top.title(TITULO_JANELA)
         top.config(takefocus=True)
 
         txt = Entry(top, width=100)
-        txt.insert(0, self.get_local_do_arquivo)
+        txt.insert(0, str(self.get_local_do_arquivo.absolute()))
         txt.config(state=READONLY)
         txt.pack(padx=5, pady=5)
         txt.bind('<Button-1>', self.copia_texto)
@@ -195,11 +195,11 @@ class Temporizador:
     @property
     def get_local_do_arquivo(self):
         local = self.BASE / self.get_nome_do_arquivo
-        return str(local)
+        return local
 
     @property
     def horario_inicio_str(self) -> str:
-        return f'{self.root.children[HORA_INICIO].get()}:{self.root.children[HORA_ENCERRAMENTO].get()}'
+        return f'{self.root.children.get(HORA_INICIO).get()}:{self.root.children.get(HORA_ENCERRAMENTO).get()}'
 
     @property
     def horario_inicio_timer(self) -> datetime:
@@ -207,7 +207,7 @@ class Temporizador:
 
     @property
     def horario_fim_str(self) -> str:
-        return f'{self.root.children[HORA_ENCERRAMENTO].get()}:{self.root.children[MINUTO_ENCERRAMENTO].get()}'
+        return f'{self.root.children.get(HORA_ENCERRAMENTO).get()}:{self.root.children.get(MINUTO_ENCERRAMENTO).get()}'
 
     @property
     def horario_fim_timer(self) -> datetime:

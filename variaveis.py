@@ -10,6 +10,8 @@ MINUTO_INICAL_PADRAO = '00'
 HORA_FINAL_PADRAO = '19'
 MINUTO_FINAL_PADRAO = '40'
 
+TEMPO_ZERADO = '00:00'
+
 HORA_INICIO = 'hora_inicio'
 MINUTO_INICIO = 'minuto_inicio'
 SEGUNDO_INICIO = 'segundo_inicio'
