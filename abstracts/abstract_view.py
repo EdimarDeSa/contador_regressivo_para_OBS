@@ -29,20 +29,24 @@ class AbstractView(ABC):
     def set_time_fields(self, state: Literal['readonly', 'normal']) -> None:
         pass
 
+    @property
     @abstractmethod
-    def get_start_hour(self) -> str:
+    def get_start_hour(self) -> int:
         pass
 
+    @property
     @abstractmethod
-    def get_start_minute(self) -> str:
+    def get_start_minute(self) -> int:
         pass
 
+    @property
     @abstractmethod
-    def get_end_hour(self) -> str:
+    def get_end_hour(self) -> int:
         pass
 
+    @property
     @abstractmethod
-    def get_end_minute(self) -> str:
+    def get_end_minute(self) -> int:
         pass
 
     @abstractmethod

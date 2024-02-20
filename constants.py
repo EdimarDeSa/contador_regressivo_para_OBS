@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from enum import Enum, StrEnum
 
 from ttkbootstrap.constants import *
@@ -38,6 +39,41 @@ class Buttons(Enum):
         'bootstyle': DANGER,
     }
 
+
+class TimeFormatter(ABC):
+    @staticmethod
+    @abstractmethod
+    def format_time(total_seconds: int) -> str:
+        pass
+
+
+class SecondsFormatter(TimeFormatter):
+    @staticmethod
+    def format_time(total_seconds: int) -> str:
+        return f'{total_seconds}'
+
+
+class MinutesSecondsFormatter(TimeFormatter):
+    @staticmethod
+    def format_time(total_seconds: int) -> str:
+        total_minutes, seconds = divmod(total_seconds, 60)
+        return f'{total_minutes}:{seconds:02}'
+
+
+class HoursMinutesSecondsFormatter(TimeFormatter):
+    @staticmethod
+    def format_time(total_seconds: int) -> str:
+        total_hours, remaining_seconds = divmod(total_seconds, 3600)
+        total_minutes, seconds = divmod(remaining_seconds, 60)
+        return f'{total_hours}:{total_minutes:02}:{seconds:02}'
+
+
+# Utilização:
+formatters = {
+    'SS': SecondsFormatter,
+    'MM:SS': MinutesSecondsFormatter,
+    'HH:MM:SS': HoursMinutesSecondsFormatter
+}
 
 INIT = 'inicio'
 ENDING = 'encerramento'

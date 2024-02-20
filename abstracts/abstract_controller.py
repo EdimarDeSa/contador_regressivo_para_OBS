@@ -11,13 +11,5 @@ class AbstractController(ABC):
         pass
 
     @abstractmethod
-    def validate_hour_input_cmd(self, tempo: str) -> bool:
-        pass
-
-    @abstractmethod
-    def validate_minute_second_input_cmd(self, tempo: str) -> bool:
-        pass
-
-    @abstractmethod
     def evento_de_fechamento(self) -> None:
         pass

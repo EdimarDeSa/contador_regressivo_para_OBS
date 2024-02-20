@@ -2,7 +2,8 @@ import tkinter
 from tkinter import messagebox
 from typing import Literal
 
-from ttkbootstrap import Button, Entry, Label, Spinbox, StringVar, Toplevel, Window
+from ttkbootstrap import Button, Entry, Label, Spinbox, StringVar, Toplevel, Window, Combobox
+from ttkbootstrap.validation import add_option_validation
 
 from abstracts.abstract_controller import AbstractController
 from abstracts.abstract_view import AbstractView
@@ -21,13 +22,6 @@ class View(AbstractView):
         self._root.mainloop()
 
     def _setup_variables(self) -> None:
-        self.validate_hour_input = self._root.register(
-            self.controller.validate_hour_input_cmd
-        )
-        self.validate_minute_second_input = self._root.register(
-            self.controller.validate_minute_second_input_cmd
-        )
-
         self.fields = list()
         self._display = StringVar(value=TEMPO_ZERADO)
 
@@ -61,9 +55,7 @@ class View(AbstractView):
             self._root,
             name=f'hour_{field_name}',
             from_=0,
-            to=24,
-            validate=KEY,
-            validatecommand=(self.validate_hour_input, '%P'),
+            to=23
         )
         hour_spinbox.place(relx=relx, rely=0.2, width=75)
         hour_spinbox.insert(
@@ -81,9 +73,7 @@ class View(AbstractView):
             self._root,
             name=f'minut_{field_name}',
             from_=0,
-            to=60,
-            validate=KEY,
-            validatecommand=(self.validate_minute_second_input, '%P'),
+            to=59,
         )
         minute_spinbox.place(relx=relx + 0.175, rely=0.2, width=75)
         minute_spinbox.insert(
@@ -97,10 +87,24 @@ class View(AbstractView):
             relx=0.05, rely=0.405
         )
 
-        timer_name = Entry(self._root, name='timer_name')
-        timer_name.place(relx=0.33, rely=0.4, relwidth=0.62)
-        timer_name.insert(0, DEFAULT_NAME)
-        self.fields.append(timer_name)
+        self.timer_name = Entry(self._root)
+        self.timer_name.place(relx=0.29, rely=0.4, relwidth=0.2)
+        self.timer_name.insert(0, DEFAULT_NAME)
+
+        self.fields.append(self.timer_name)
+
+        Label(self._root, text='Formato:', font='-size 12').place(
+            relx=0.5, rely=0.405
+        )
+
+        formats = list(formatters.keys())
+        self.format = StringVar(value=formats[1])
+        format_ = Combobox(self._root, values=formats, textvariable=self.format, exportselection=False)
+        format_.place(relx=0.645, rely=0.405)
+
+        add_option_validation(format_, formats, 'all')
+
+        self.fields.append(format_)
 
     def inicia_display(self):
         Label(
@@ -124,6 +128,7 @@ class View(AbstractView):
             field.configure(state=state)
 
     def set_display(self, text: str) -> None:
+
         self._display.set(text)
 
     def askyesno(self, title: str, message: str) -> bool:
@@ -132,17 +137,24 @@ class View(AbstractView):
     def alert(self, title: str, message: str) -> None:
         messagebox.showerror(title, message)
 
-    def get_start_hour(self) -> str:
-        return self._root.children.get(Start.HOUR).get()
+    @property
+    def get_start_hour(self) -> int:
+        return int(self._root.children.get(Start.HOUR).get())
 
-    def get_start_minute(self) -> str:
-        return self._root.children.get(Start.MINUT).get()
+    @property
+    def get_start_minute(self) -> int:
+        return int(self._root.children.get(Start.MINUT).get())
 
-    def get_end_hour(self) -> str:
-        return self._root.children.get(End.HOUR).get()
+    @property
+    def get_end_hour(self) -> int:
+        return int(self._root.children.get(End.HOUR).get())
 
-    def get_end_minute(self) -> str:
-        return self._root.children.get(End.MINUT).get()
+    @property
+    def get_end_minute(self) -> int:
+        return int(self._root.children.get(End.MINUT).get())
+
+    def get_timer_name(self) -> str:
+        return self.timer_name.get()
 
     def show_file_path(self, file_path: str) -> None:
         top = Toplevel(resizable=(False, False), topmost=True, name='toplevel')
@@ -163,6 +175,3 @@ class View(AbstractView):
         label = Label(widget.master, text='Texto copiado!')
         label.pack()
         widget.after(1000, label.pack_forget)
-
-    def get_timer_name(self) -> str:
-        return self._root.children.get('timer_name').get()
