@@ -64,18 +64,5 @@ Após iniciar o programa uma a GUI irá se abrir:<br>
 ![img.png](Imagens/Texto_GDI+.png)
 
 <p>
-Para ter acesso ao app já compilado:
-</p>
-
-<BR>
-<BR>
-
-<div class="quadro_botao">
-    <div class="button">
-        <a href="https://efscode.com.br/atualizacoes/downloads/contador_regressivo_para_OBS.zip" class="text">Download</a>
-    </div>
-</div>
-
-<p>
 Desenvolvido por <a href="https://www.efscode.com.br">EFSCode</a>
 </p>
